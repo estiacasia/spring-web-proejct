@@ -6,6 +6,8 @@ import com.yoongi.springweb.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
@@ -14,5 +16,9 @@ public class PostService {
 
     public Post save(AddPostRequest request) {
         return postRepository.save(request.toEntity());
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 }
