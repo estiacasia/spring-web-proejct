@@ -19,7 +19,9 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -73,5 +75,46 @@ class PostControllerTest {
         assertThat(posts.get(0).getTitle()).isEqualTo(title);
         assertThat(posts.get(0).getContent()).isEqualTo(content);
         assertThat(posts.get(0).getUserId()).isEqualTo(user_id);
+    }
+
+    @DisplayName("Testing for getting posts")
+    @Test
+    public void getPosts() throws Exception {
+
+        //given
+        final String url = "/posts";
+
+        final String title1 = "title1";
+        final String content1 = "content1";
+        final String userId1 = "userId1";
+        final String title2 = "title2";
+        final String content2 = "content2";
+        final String userId2 = "userId2";
+
+        postRepository.save(Post.builder()
+                .title(title1)
+                .content(content1)
+                .userId(userId1)
+                .build());
+
+        postRepository.save(Post.builder()
+                .title(title2)
+                .content(content2)
+                .userId(userId2)
+                .build());
+
+        //when
+        ResultActions result = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value(title1))
+                .andExpect(jsonPath("$[0].content").value(content1))
+                .andExpect(jsonPath("$[0].userId").value(userId1))
+                .andExpect(jsonPath("$[1].title").value(title2))
+                .andExpect(jsonPath("$[1].content").value(content2))
+                .andExpect(jsonPath("$[1].userId").value(userId2));
     }
 }
