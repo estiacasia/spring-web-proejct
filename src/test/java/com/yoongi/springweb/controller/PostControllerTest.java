@@ -117,4 +117,30 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[1].content").value(content2))
                 .andExpect(jsonPath("$[1].userId").value(userId2));
     }
+
+    @DisplayName("Testing for getting a certain post")
+    @Test
+    public void findPost() throws Exception {
+        // given
+        final String url = "/posts/{id}";
+        final String title = "title";
+        final String content = "content";
+        final String userId = "userId";
+
+        Post savedPost = postRepository.save(Post.builder()
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build());
+
+        //when
+        final ResultActions resultActions = mockMvc.perform((get(url,savedPost.getPostId())));
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.content").value(content))
+                .andExpect(jsonPath("$.userId").value(userId));
+    }
 }
