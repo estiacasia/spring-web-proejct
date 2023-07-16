@@ -26,4 +26,8 @@ public class PostService {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
     }
+
+    public void delete(long postId) {
+        postRepository.deleteById(postId);
+    }
 }

@@ -19,8 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,5 +141,30 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title").value(title))
                 .andExpect(jsonPath("$.content").value(content))
                 .andExpect(jsonPath("$.userId").value(userId));
+    }
+
+    @DisplayName("Testing for deleting a certain post")
+    @Test
+    public void deletePost() throws Exception {
+        //given
+        final String url = "/posts/{id}";
+        final String title = "title";
+        final String content = "content";
+        final String userId = "userId";
+
+        Post savedPost = postRepository.save(Post.builder()
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build());
+
+        //when
+        mockMvc.perform(delete(url, savedPost.getPostId()))
+                .andExpect(status().isOk());
+
+        //then
+        List<Post> posts = postRepository.findAll();
+
+        assertThat(posts).isEmpty();
     }
 }
