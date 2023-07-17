@@ -3,6 +3,7 @@ package com.yoongi.springweb.controller;
 import com.yoongi.springweb.domain.Post;
 import com.yoongi.springweb.dto.AddPostRequest;
 import com.yoongi.springweb.dto.PostResponse;
+import com.yoongi.springweb.dto.UpdatePostRequest;
 import com.yoongi.springweb.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,14 @@ public class PostController {
 
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @PutMapping("posts/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId,
+                                           @RequestBody UpdatePostRequest request) {
+        Post updatedPost = postService.update(postId, request);
+
+        return ResponseEntity.ok()
+                .body(updatedPost);
     }
 }

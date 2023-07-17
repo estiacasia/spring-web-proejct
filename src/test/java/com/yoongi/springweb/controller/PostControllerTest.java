@@ -3,6 +3,7 @@ package com.yoongi.springweb.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yoongi.springweb.domain.Post;
 import com.yoongi.springweb.dto.AddPostRequest;
+import com.yoongi.springweb.dto.UpdatePostRequest;
 import com.yoongi.springweb.repository.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -166,5 +167,39 @@ class PostControllerTest {
         List<Post> posts = postRepository.findAll();
 
         assertThat(posts).isEmpty();
+    }
+
+    @DisplayName("Testing for updating a certain post")
+    @Test
+    public void updatePost() throws Exception {
+        //given
+        final String url = "/posts/{id}";
+        final String title = "title";
+        final String content = "content";
+        final String userId = "userId";
+
+        Post savedPost = postRepository.save(Post.builder()
+                .title(title)
+                .content(content)
+                .userId(userId)
+                .build());
+
+        final String newTitle = "newTitle";
+        final String newContent = "newContent";
+
+        UpdatePostRequest request = new UpdatePostRequest(newTitle, newContent);
+
+        //when
+        ResultActions result = mockMvc.perform(put(url, savedPost.getPostId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        result.andExpect(status().isOk());
+
+        Post post = postRepository.findById(savedPost.getPostId()).get();
+
+        assertThat(post.getTitle()).isEqualTo(newTitle);
+        assertThat(post.getContent()).isEqualTo(newContent);
     }
 }

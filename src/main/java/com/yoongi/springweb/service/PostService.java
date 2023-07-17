@@ -2,7 +2,9 @@ package com.yoongi.springweb.service;
 
 import com.yoongi.springweb.domain.Post;
 import com.yoongi.springweb.dto.AddPostRequest;
+import com.yoongi.springweb.dto.UpdatePostRequest;
 import com.yoongi.springweb.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,15 @@ public class PostService {
 
     public void delete(long postId) {
         postRepository.deleteById(postId);
+    }
+
+    @Transactional
+    public Post update(long postId, UpdatePostRequest request) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + postId));
+
+        post.update(request.getTitle(), request.getContent());
+
+        return post;
     }
 }
