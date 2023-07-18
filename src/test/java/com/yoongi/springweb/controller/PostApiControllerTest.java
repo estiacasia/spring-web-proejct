@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PostControllerTest {
+class PostApiControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
@@ -52,7 +52,7 @@ class PostControllerTest {
     @Test
     public void addPost() throws Exception {
         // given
-        final String url = "/posts";
+        final String url = "/api/posts";
         final String title = "testTitle";
         final String content = "testContent";
         final String user_id = "test_id";
@@ -82,7 +82,7 @@ class PostControllerTest {
     public void getPosts() throws Exception {
 
         //given
-        final String url = "/posts";
+        final String url = "/api/posts";
 
         final String title1 = "title1";
         final String content1 = "content1";
@@ -122,7 +122,7 @@ class PostControllerTest {
     @Test
     public void findPost() throws Exception {
         // given
-        final String url = "/posts/{id}";
+        final String url = "/api/posts/{id}";
         final String title = "title";
         final String content = "content";
         final String userId = "userId";
@@ -148,7 +148,7 @@ class PostControllerTest {
     @Test
     public void deletePost() throws Exception {
         //given
-        final String url = "/posts/{id}";
+        final String url = "/api/posts/{id}";
         final String title = "title";
         final String content = "content";
         final String userId = "userId";
@@ -173,7 +173,7 @@ class PostControllerTest {
     @Test
     public void updatePost() throws Exception {
         //given
-        final String url = "/posts/{id}";
+        final String url = "/api/posts/{id}";
         final String title = "title";
         final String content = "content";
         final String userId = "userId";
