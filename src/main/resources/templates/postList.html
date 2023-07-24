@@ -25,7 +25,7 @@
         <tbody>
         <tr th:each="item : ${posts}">
             <td class="w-75">
-                <a th:href="@{/posts/{id}(id=${item.postId})}" th:text="${item.title}"></a>
+                <a th:href="@{/posts/{postId}(postId=${item.postId})}" th:text="${item.title}"></a>
             </td>
             <td class="w-25" th:text="${item.userId}"></td>
         </tr>
