@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -34,5 +36,17 @@ public class PostViewController {
         model.addAttribute("post", new PostViewResponse(post));
 
         return "post";
+    }
+
+    @GetMapping("/new-post")
+    public String newPost(@RequestParam(required = false) Long postId, Model model) {
+        if (postId == null)
+             model.addAttribute("post", new PostViewResponse());
+        else {
+            Post post = postService.findByPostId(postId);
+            model.addAttribute("post", new PostViewResponse(post));
+        }
+
+        return "newPost";
     }
 }
