@@ -15,6 +15,7 @@ public class PostViewResponse {
     private String title;
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public PostViewResponse(Post post) {
         this.postId = post.getPostId();
@@ -22,5 +23,6 @@ public class PostViewResponse {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreateAt();
+        this.modifiedAt = post.getModifiedAt();
     }
 }
